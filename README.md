@@ -23,7 +23,7 @@ First, you will need to set up a chef server, then do the following
 `sh deploy-cfg.sh 3 6`
 9. Deploy the mongos servers, currently the amount of mongos servers is hardcoded to 1  
 `sh deploy-mongos.sh`
-10 Deploy the joola.io server, currently the amount of joola.io servers is hardcoded to 1
+10. Deploy the joola.io server, currently the amount of joola.io servers is hardcoded to 1
 
 ## TODO:
 
