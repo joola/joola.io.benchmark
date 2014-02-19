@@ -14,6 +14,13 @@ bash "install node" do
         EOH
 end
 
+bash "install redis" do
+	code <<-EOH
+	yum -y install redis
+	service redis start
+	EOH
+end
+
 bash "get joola" do
         code <<-EOH
 	cd /tmp
@@ -21,6 +28,6 @@ bash "get joola" do
 	cd joola.io
 	npm install
 	npm install -g pm2
-	pm2 start joola.io
+#	pm2 start joola.io
         EOH
 end

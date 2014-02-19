@@ -1,31 +1,38 @@
-The chef-repo
-===============
-All installations require a central workspace known as the chef-repo. This is a place where primitive objects--cookbooks, roles, environments, data bags, and chef-repo configuration files--are stored and managed.
+joola.io.benchmark
+==================
 
-The chef-repo should be kept under version control, such as [git](http://git-scm.org), and then managed as if it were source code.
+##INTRO
 
-Knife Configuration
--------------------
-Knife is the [command line interface](http://docs.opscode.com/knife.html) for Chef. The chef-repo contains a .chef directory (which is a hidden directory by default) in which the Knife configuration file (knife.rb) is located. This file contains configuration settings for the chef-repo.
+This repo contains a set of chef recipes that can be used to deploy a full joola.io instance including a sharded mongo setup
 
-The knife.rb file is automatically created by the starter kit. This file can be customized to support configuration settings used by [cloud provider options](http://docs.opscode.com/plugin_knife.html) and custom [knife plugins](http://docs.opscode.com/plugin_knife_custom.html).
+##HOW TO USE
 
-Also located inside the .chef directory are .pem files, which contain private keys used to authenticate requests made to the Chef server. The USERNAME.pem file contains a private key unique to the user (and should never be shared with anyone). The ORGANIZATION-validator.pem file contains a private key that is global to the entire organization (and is used by all nodes and workstations that send requests to the Chef server).
+First, you will need to set up a chef server, then do the following
 
-More information about knife.rb configuration options can be found in [the documentation for knife](http://docs.opscode.com/config_rb_knife.html).
+1. Clone this repo
+2. Add the .pem files for the validator user and chef server admin user to the .chef/ directory
+3. Run `knife list` to make sure everything is set up correctly
+4. Upload the recipes to your chef server by running `knife cookbook upload --all`
+5. Use the .sh scripts included in this repo to deploy the mongo and joola.io nodes
+6. The .sh files are using Linode's APIs to set up the servers, so you'll need to register and save your Linode API key as a env var:
 
-Cookbooks
----------
-A cookbook is the fundamental unit of configuration and policy distribution. A sample cookbook can be found in `cookbooks/starter`. After making changes to any cookbook, you must upload it to the Chef server using knife:
+`export LINODE_API=<your key>`
 
-    $ knife upload cookbooks/starter
+7. Currently the amount of config servers are hardcoded to 3, to create the cfg servers run:
 
-For more information about cookbooks, see the example files in the `starter` cookbook.
+`sh deploy-cfg.sh`
 
-Roles
------
-Roles provide logical grouping of cookbooks and other roles. A sample role can be found at `roles/starter.rb`.
+8. Deploy the mongod servers, the deploy-mongod.sh file takes two parameters, amount of servers and server flavor (1=1024,2=2048...)
 
-Getting Started
--------------------------
-Now that you have the chef-repo ready to go, check out [Learn Chef](https://learnchef.opscode.com/quickstart/workstation-setup/) to proceed with your workstation setup. If you have any questions about Enterprise Chef you can always ask [our support team](https://www.opscode.com/support/tickets/new) for a helping hand.
+`sh deploy-cfg.sh 3 6`
+
+9. Deploy the mongos servers, currently the amount of mongos servers is hardcoded to 1
+
+`sh deploy-mongos.sh`
+
+10 Deploy the joola.io server, currently the amount of joola.io servers is hardcoded to 1
+
+
+## TODO:
+
+See issues.
