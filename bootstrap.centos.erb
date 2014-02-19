@@ -1,0 +1,9 @@
+bash -c '
+<%= "export http_proxy=\"#{knife_config[:bootstrap_proxy]}\"" if knife_config[:bootstrap_proxy] -%>
+ 
+yum install -y wget
+wget <%= "--proxy=on " if knife_config[:bootstrap_proxy] %>http://rbel.co/rbel6
+rpm -Uvh rbel6
+ 
+yum install -y rubygem-chef
+'

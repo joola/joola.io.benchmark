@@ -1,0 +1,16 @@
+{
+  "chef": {
+    "chef_server_url": "https://api.opscode.com/organizations/joola2",
+    "validation_client_name": "joola2-validator",
+    "validation_key_path": ".chef/joola2-validator.pem",
+    "client_key": ".chef/joola.pem",
+    "node_name": "joola"
+  },
+  "vagrant": {
+    "vm": {
+      "box": "opscode-ubuntu-12.04-i386",
+      "box_url": "https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04-i386_provisionerless.box",
+      "provision": "chef_client"
+    }
+  }
+}
