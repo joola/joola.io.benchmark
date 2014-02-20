@@ -12,6 +12,7 @@ bash "start mongodb cfg" do
 	code <<-EOH
 	service mongod stop
 	mongos --configdb #{cfg1[0]["ipaddress"]}:27019,#{cfg2[0]["ipaddress"]}:27019,#{cfg3[0]["ipaddress"]}:27019 --fork --logpath /var/log/mongodb.log
+	EOH
 end
 
 search(:node, 'role:mongod').each do |result|
@@ -20,6 +21,13 @@ search(:node, 'role:mongod').each do |result|
 		mongo --eval "sh.addShard('#{result["ipaddress"]}:27017')"
 		EOH
 	end
+end
+
+bash "enable sharding" do
+	code <<-EOH
+	mongo --eval "sh.enableSharding('cache')"
+	mongo --eval "sh.shardCollection('cache.joola_bc_tx',{'_key':1})"
+	EOH
 end
 
 #bash "add mongod shards"
