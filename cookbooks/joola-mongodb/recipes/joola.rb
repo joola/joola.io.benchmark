@@ -28,6 +28,6 @@ bash "get joola" do
 	cd joola.io
 	npm install
 	npm install -g pm2
-#	pm2 start joola.io
+	pm2 start joola.io.js
         EOH
 end

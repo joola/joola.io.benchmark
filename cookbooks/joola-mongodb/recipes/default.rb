@@ -23,11 +23,3 @@ end
 yum_package "mongo-10gen-server" do
   action :install
 end
-
-# ADD MONGO TO SYSTEM BOOT AND START MONGO
-#bash "install mongo" do
-#	code <<-EOH
-#	chkconfig mongod on
-#  	/etc/init.d/mongod restart
-#	EOH
-#end
