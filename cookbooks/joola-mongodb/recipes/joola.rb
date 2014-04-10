@@ -31,14 +31,16 @@ bash "install joola" do
 end
 
 mongos = search(:node, "name:mongos")
-#mongosip = #{mongos[0]["ipaddress"]}
+rbq = search(:node, "name:rbq")
+
 template "/tmp/joola.io/config/baseline.json" do
   source "baseline.json.erb"
   mode 0777
   owner "root"
   group "root"
   variables({
-     :mongos => mongos.first['ipaddress']
+     :mongos => mongos.first['ipaddress'],
+     :rbq => rbq.first['ipaddress']
   })
 end
 
