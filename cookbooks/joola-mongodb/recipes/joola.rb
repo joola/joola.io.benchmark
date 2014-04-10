@@ -21,12 +21,30 @@ bash "install redis" do
 	EOH
 end
 
-bash "get joola" do
+bash "install joola" do
         code <<-EOH
-	cd /tmp
+        cd /tmp
         git clone https://github.com/joola/joola.io.git
-	cd joola.io
-	npm install
+        cd joola.io
+        npm install
+	EOH
+end
+
+mongos = search(:node, "name:mongos")
+#mongosip = #{mongos[0]["ipaddress"]}
+template "/tmp/joola.io/config/baseline.json" do
+  source "baseline.json.erb"
+  mode 0777
+  owner "root"
+  group "root"
+  variables({
+     :mongos => mongos.first['ipaddress']
+  })
+end
+
+bash "start joola" do
+	code <<-EOH
+	cd /tmp/joola.io
 	npm install -g pm2
 	pm2 start joola.io.js
         EOH
